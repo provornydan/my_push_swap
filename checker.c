@@ -11,13 +11,13 @@ void    rotate_list(t_list **head, t_list **tail)
 {
    if((*head)->next != NULL)
    {
-        *head = (*head)->next;
-        (*tail)->next = (*head)->prev;
-        (*head)->prev->prev = (*tail);
-        (*head)->prev->next = NULL;
-        (*head)->prev = NULL;
-        *tail = (*tail)->prev;
-    }
+       *head = (*head)->next;
+       (*head)->prev->next = NULL;
+       (*head)->prev->prev = *tail;
+       (*tail)->next = (*head)->prev;
+       (*head)->prev = NULL;
+       *tail = (*tail)->next;
+   }
 }
 
 void    reverse_rotate_list(t_list **head, t_list **tail)
@@ -103,13 +103,12 @@ int     main(int argc, char **argv)
     t_list *second_now;
     now = NULL;
     second_now = NULL;
-    push_list(&new, &now, 23);
-    push_list(&new, &now, 2);
-    push_list(&new, &now, 55);
-  //  push_list(&second_new, &second_now, -3);
-  //  push_between(&new, &second_new);
-    rotate_list(&new, &now);
-    rotate_list(&new, &now);
+    push_list(&new, &now, 7);
+    push_list(&new, &now, 11);
+    reverse_rotate_list(&new, &now);
+    reverse_rotate_list(&new, &now);
+    reverse_rotate_list(&new, &now);
+ //   rotate_list(&new, &now);
     t_list *try = new;
     while(try)
     {
