@@ -279,7 +279,9 @@ int     main(int argc, char **argv)
     }
     if(!check_repeat(arr, argc - 1))
     {
+		write(1, AC_RED, 5);
         ft_putstr("Error\n");
+		write(1, AC_RESET, 4);
         return(0);
     }
     while(str = get_next_line(0))
