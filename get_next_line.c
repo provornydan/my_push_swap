@@ -57,7 +57,7 @@ char	*get_next_line(const int fd)
 		buf[rd] = '\0';
 	}
 	if ((r = (i == 0) ? malloc(sizeof(*r) * READ_MAX + 1) :
-				my_realloc(res, sizeof(*r) * READ_MAX + 1)) == NULL)
+				my_realloc(r, sizeof(*r) * READ_MAX + 1)) == NULL)
 		return (NULL);
 	while (buf[my_len(buf) - rd] && buf[my_len(buf) - rd] != '\n')
 		r[i++] = buf[my_len(buf) - rd--];

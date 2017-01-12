@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h> 
 
-long long notations(long long *n, long long *mid, long long *i)
+int notations(int *n, int *mid, int *i)
 {
 	if(*n < 2)
 		return (0);
@@ -9,11 +9,11 @@ long long notations(long long *n, long long *mid, long long *i)
 	*i = -1;
 }
 
-void merge(long long *a,long long *l,long long arr[2],long long *r) 
+void merge(int *a,int *l,int arr[2],int *r) 
 {
-	long long i;
-	long long j;
-	long long k;
+	int i;
+	int j;
+	int k;
 
 	i = 0; 
 	j = 0; 
@@ -30,18 +30,18 @@ void merge(long long *a,long long *l,long long arr[2],long long *r)
 		a[k++] = r[j++];
 }
 
-void merge_sort(long long *a,long long n) 
+void merge_sort(int *a,int n) 
 {
-	long long mid;
-	long long i; 
-	long long *l;
-	long long *r;
-	long long arr[2];
+	int mid;
+	int i; 
+	int *l;
+	int *r;
+	int arr[2];
 
 	if(!notations(&n, &mid, &i))
 		return ;
-	l = (long long*)malloc(mid*sizeof(long long)); 
-	r = (long long*)malloc((n- mid)*sizeof(long long)); 
+	l = (int*)malloc(mid*sizeof(int)); 
+	r = (int*)malloc((n- mid)*sizeof(int)); 
 	while(++i < mid) 
 		l[i] = a[i];
 	i = mid - 1; 
@@ -56,11 +56,11 @@ void merge_sort(long long *a,long long n)
     free(r);
 }
 
-/*long long main() {
-	long long A[] = {9, 8, 7,6,5,4,3,2,1};
-	long long i,numberOfElements;
+/*int main() {
+	int A[] = {9, 8, 7,6,5,4,3,2,1};
+	int i,numberOfElements;
 	numberOfElements = sizeof(A)/sizeof(A[0]); 
 	merge_sort(A,numberOfElements);
-	for(i = 0;i < numberOfElements;i++) prlong longf("%d ",A[i]);
+	for(i = 0;i < numberOfElements;i++) printf("%d ",A[i]);
 	return 0;
 }*/

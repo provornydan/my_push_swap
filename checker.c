@@ -4,17 +4,6 @@
 #include "header.h"
 #include "merge.c"
 
-void    push_list(t_list **, t_list **, long long);
-void    swap_list(t_list **);
-void    push_between(t_list **, t_list **);
-void    rotate_list(t_list **, t_list **);
-int     add_push_number(char *, t_list **, t_list **, long long *);
-int     check_number(char *, int *, long long*);
-int     check_repeat(long long *, int);
-void    ft_putchar(char);
-void    ft_putstr(char *);
-int     ft_strcmp(char *, char *);
-
 void    ft_putchar(char c)
 {
     write(1, &c, 1);
@@ -29,7 +18,7 @@ void    ft_putstr(char *c)
         ft_putchar(*(c + i));
 }
 
-int     check_repeat(long long *n, int size)
+int     check_repeat(int *n, int size)
 {
     int i;
 
@@ -43,45 +32,48 @@ int     check_repeat(long long *n, int size)
     return (1);
 }
 
-int     check_number(char *str, int *i, long long *n)
+long     check_number(char *str, int *i)
 {
+    long num;
+    short sign;
+
+    sign = 1;
+    num = 0;
+    if(*(str + *i) == '-')
+        sign = -1;
     *i = *i + 1;
     while(*(str + *i))
     {
         if(*(str + *i) >= '0' && *(str + *i) <= '9')
         {
-            *n = *n * 10;
-            *n+= *(str + *i) - '0'; 
+            num = num * 10;
+            num+= (*(str + *i) - '0')*sign; 
         }
         else
-            return (0);
+            exit(print_error());
+        if(sign == -1 && num > 0)
+            num = -num;
         if(*i == 12)
-            return (0);
+            exit(print_error());
         *i = *i + 1;
     }
-    return (1);
+    return (num);
 }
 
-int     add_push_number(char *str, t_list **new, t_list **now, long long *tab)
+int     add_push_number(char *str, t_list **new, t_list **now, int *tab)
 {
     int i;
-    long long n;
+    int n;
     short sign;
+    long temp;
 
-    n = 0;
     i = -1;
-    sign = 0;
     if(*str == '-')
-    {
-        sign = 1;
         i++;
-    }
-    if(!check_number(str, &i, &n))
+    temp = check_number(str, &i);
+    if(temp > 2147483647 || temp < -2147483648)
         return(0);
-    if(sign)
-        n = -n;
-    if(n > 2147483647 || n < -2147483648)
-        return(0);
+    n = (int)temp;
     push_list(new, now, n);
     tab[(*now)->ord] = n;
     return (1);
@@ -113,12 +105,12 @@ void    reverse_rotate_list(t_list **head, t_list **tail)
     }
 }
 
-void    push_between(t_list **source, t_list **dest)
+void    push_between(t_list **source, t_list **dest, t_list **tail)
 {
     t_list *create;
 
-    if(*source != NULL)
-    {
+    if(*source == NULL)
+        return;
         create = (t_list *)malloc(sizeof(t_list));
         create->data = (*source)->data;
         create->ord = (*source)->ord;
@@ -126,6 +118,8 @@ void    push_between(t_list **source, t_list **dest)
         create->prev = NULL;
         if(*dest != NULL)
             (*dest)->prev = create;
+        else
+            *tail = create;
         *dest = create;
         if((*source)->next == NULL)
         {
@@ -138,12 +132,11 @@ void    push_between(t_list **source, t_list **dest)
             free((*source)->prev);
             (*source)->prev = NULL;
         }
-    }
 }
 
 void    swap_list(t_list **head)
 {
-    if((*head)->next != NULL)
+    if(*head != NULL && (*head)->next != NULL)
     {
         *head = (*head)->next;
         (*head)->prev->next = (*head)->next;
@@ -153,7 +146,7 @@ void    swap_list(t_list **head)
     }
 }
 
-void    push_list(t_list **head, t_list **start, long long data)
+void    push_list(t_list **head, t_list **start, int data)
 {
     if(*start == NULL)
     {
@@ -209,9 +202,9 @@ int    compare_string(char *str, t_list **list)
     else if(!ft_strcmp(str, "ss"))
         swap_both(&list[0], &list[2]);
     else if(!ft_strcmp(str, "pa"))
-        push_between(&list[2], &list[0]);
+        push_between(&list[2], &list[0], &list[1]);
     else if(!ft_strcmp(str, "pb"))
-        push_between(&list[0], &list[2]);
+        push_between(&list[0], &list[2], &list[3]);
     else if(!ft_strcmp(str, "ra"))
         rotate_list(&list[0], &list[1]);
     else if(!ft_strcmp(str, "rb"))
@@ -252,53 +245,87 @@ void     check_solved(t_list **list)
     }
     ft_putstr("OK\n");
 }
-int     main(int argc, char **argv)
-{
-    t_list  **my_vars;
-    char    *str;    
-    my_vars = (t_list**)malloc(sizeof(t_list*)*4);
-   /* t_list *new;
-    t_list *now;
-    t_list *second_new;
-    t_list *second_now;*/
-    long long *arr;
 
+int     print_error(void)
+{
+        write(1, AC_RED, 5);
+        ft_putstr("Error\n");
+        write(1, AC_RESET, 4);
+        return(0);
+}
+void    reset_tails(t_list **my_vars)
+{
     my_vars[1] = NULL;
     my_vars[2] = NULL;
     my_vars[3] = NULL;
-    arr = malloc(sizeof(long long)*(argc - 1));
+}
+
+void    try_add(char **split, t_list **my_vars, int *arr)
+{
+     while(*split)
+        {
+            if(!add_push_number(*split, &my_vars[0], &my_vars[1], arr))
+                exit(print_error());
+            split++;
+        }
+}
+
+void   cont_help(int *count, int *temp)
+{
+    *count = *count + 1;
+    *temp = 0;
+}
+int    count_words(char **argv)
+{
+    int i;
+    int j;
+    int count;
+    int temp;
+
+    i = 0;
+    count = 0;
+    while(*(argv + ++i))
+    {
+        j = -1;
+        temp = 0;
+        while(argv[i][++j])
+        {
+            if(argv[i][j] != ' ' && argv[i][j] != '\t')
+            {
+                if(!argv[i][j+1])
+                    count++;
+                temp++;
+            }
+            else if(temp != 0)
+                cont_help(&count, &temp);
+        }
+    }
+    return(count);
+}
+
+/*int     main(int argc, char **argv)
+{
+    t_list  **my_vars;
+    char    *str;
+    char    **split;    
+    int *arr;
+    int n;
+
+    n = count_words(argv);
+    my_vars = (t_list**)malloc(sizeof(t_list*)*4);
+    reset_tails(my_vars);
+    arr = malloc(sizeof(int)*n);
     if (argc < 2)
         return(0);
     while(*(++argv))
     {
-        if(!add_push_number(*argv, &my_vars[0], &my_vars[1], arr))
-        {
-            ft_putstr("Error\n");
-            return(0);
-        }
+        split = ft_split_whitespaces(*argv);
+        try_add(split, my_vars, arr);
     }
-    if(!check_repeat(arr, argc - 1))
-    {
-		write(1, AC_RED, 5);
-        ft_putstr("Error\n");
-		write(1, AC_RESET, 4);
-        return(0);
-    }
+    if(!check_repeat(arr, n))
+            return(print_error());
     while(str = get_next_line(0))
-    {
         if(!compare_string(str, my_vars))
-        {
-            ft_putstr("Error\n");
-            return(0);
-        }
-    }
-    t_list *try = my_vars[0];
- /*   while(try)
-    {
-        printf("%d  ", try->data);
-        try = try->next;
-    }*/
-  /*  for(int i = 0; i< argc - 1; i++)
-        printf("%llu  ", arr[i]); */
+            return(print_error());
     check_solved(my_vars);
-}
+}*/

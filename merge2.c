@@ -1,13 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h> 
+#include "header.h"
 
-typedef struct  arrn
-{
-	long long val;
-	int ord; 
-}				str;
-
-long long notations(long long *n, long long *mid, long long *i)
+int notations_s(int *n, int *mid, int *i)
 {
 	if(*n < 2)
 		return (0);
@@ -15,11 +10,11 @@ long long notations(long long *n, long long *mid, long long *i)
 	*i = -1;
 }
 
-void merge(str *a,str *l,long long arr[2],str *r) 
+void merge_s(sss *a,sss *l,int arr[2],sss *r) 
 {
-	long long i;
-	long long j;
-	long long k;
+	int i;
+	int j;
+	int k;
 
 	i = 0; 
 	j = 0; 
@@ -36,48 +31,51 @@ void merge(str *a,str *l,long long arr[2],str *r)
 		a[k++] = r[j++];
 }
 
-void merge_sort(str *a, long long n) 
+void merge_sort_s(sss *a, int n) 
 {
-	long long mid;
-	long long i; 
-	str *l;
-	str *r;
-	long long arr[2];
+	int mid;
+	int i; 
+	sss *l;
+	sss *r;
+	int arr[2];
 
-	if(!notations(&n, &mid, &i))
+	if(!notations_s(&n, &mid, &i))
 		return ;
-	l = (str*)malloc(mid*sizeof(str)); 
-	r = (str*)malloc((n- mid)*sizeof(str)); 
+	l = (sss*)malloc(mid*sizeof(sss)); 
+	r = (sss*)malloc((n- mid)*sizeof(sss)); 
 	while(++i < mid)
 		l[i] = a[i];
 	i = mid - 1; 
 	while(++i < n)
+	{
 		r[i-mid] = a[i];
+//		printf("%10lu  ord:%10d\n", r[i-mid].val, r[i-mid].ord);
+	}
 	arr[0] = mid;
 	arr[1] = n-mid;
-	merge_sort(l,mid);  
-	merge_sort(r,n-mid);
-	merge(a,l,arr,r);
+	merge_sort_s(l,mid);  
+	merge_sort_s(r,n-mid);
+	merge_s(a,l,arr,r);
     free(l);
     free(r);
 }
 
-long long main() {
+/*int main() {
 	
-	str *here = (str *)malloc(sizeof(str)*5);
-	str one,two,three,four,five;
-	one.val = 3; one.ord = 0;
-	two.val = 1; two.ord = 1;
-	three.val = 7; three.ord = 2;
-	four.val = 6; four.ord = 3;
-	five.val = 5; five.ord = 4;
+	sss *here = (sss *)malloc(sizeof(sss)*5);
+	sss one,two,three,four,five;
+	one.val = 9999; one.ord = 0;
+	two.val = 3; two.ord = 1;
+	three.val = 4; three.ord = 2;
+	four.val = 1; four.ord = 3;
+	five.val = -45; five.ord = 4;
 	here[0] = one; here[1] = two; here[2] = three; here[3] = four; here[4] = five;
-	long long numberOfElements = 5; 
-	merge_sort(here, numberOfElements);
-	for(long long i = 0; i< numberOfElements; i++)
-		printf("%5lu", here[i].val);
+	int numberOfElements = 5; 
+	merge_sort_s(here, numberOfElements);
+	for(int i = 0; i< numberOfElements; i++)
+		printf("%10d", here[i].val);
 	printf("\n");
-	for(long long i = 0; i< numberOfElements; i++)
-		printf("%5d", here[i].ord);
+	for(int i = 0; i< numberOfElements; i++)
+		printf("%10d", here[i].ord);
 	return 0;
-}
+}*/
