@@ -1,5 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h> 
 #include "header.h"
 
 int notations_s(int *n, int *mid, int *i)
@@ -47,10 +45,7 @@ void merge_sort_s(sss *a, int n)
 		l[i] = a[i];
 	i = mid - 1; 
 	while(++i < n)
-	{
 		r[i-mid] = a[i];
-//		printf("%10lu  ord:%10d\n", r[i-mid].val, r[i-mid].ord);
-	}
 	arr[0] = mid;
 	arr[1] = n-mid;
 	merge_sort_s(l,mid);  
@@ -59,23 +54,3 @@ void merge_sort_s(sss *a, int n)
     free(l);
     free(r);
 }
-
-/*int main() {
-	
-	sss *here = (sss *)malloc(sizeof(sss)*5);
-	sss one,two,three,four,five;
-	one.val = 9999; one.ord = 0;
-	two.val = 3; two.ord = 1;
-	three.val = 4; three.ord = 2;
-	four.val = 1; four.ord = 3;
-	five.val = -45; five.ord = 4;
-	here[0] = one; here[1] = two; here[2] = three; here[3] = four; here[4] = five;
-	int numberOfElements = 5; 
-	merge_sort_s(here, numberOfElements);
-	for(int i = 0; i< numberOfElements; i++)
-		printf("%10d", here[i].val);
-	printf("\n");
-	for(int i = 0; i< numberOfElements; i++)
-		printf("%10d", here[i].ord);
-	return 0;
-}*/

@@ -1,10 +1,4 @@
 #include "header.h"
-#include <stdio.h>
-int		fft_is_delimeter(char c);
-char	*fft_strcpy(char *dest, char *src);
-int		fft_advance(char **str);
-void	fft_advance_whitespace(char **str);
-char	**ft_split_whitespaces(char *str);
 
 int		fft_is_delimeter(char c)
 {

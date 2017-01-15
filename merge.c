@@ -1,5 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h> 
+#include "header.h" 
 
 int notations(int *n, int *mid, int *i)
 {
@@ -55,12 +54,3 @@ void merge_sort(int *a,int n)
     free(l);
     free(r);
 }
-
-/*int main() {
-	int A[] = {9, 8, 7,6,5,4,3,2,1};
-	int i,numberOfElements;
-	numberOfElements = sizeof(A)/sizeof(A[0]); 
-	merge_sort(A,numberOfElements);
-	for(i = 0;i < numberOfElements;i++) printf("%d ",A[i]);
-	return 0;
-}*/
