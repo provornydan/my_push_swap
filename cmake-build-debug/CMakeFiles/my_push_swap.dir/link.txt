@@ -1,1 +1,0 @@
-/usr/bin/cc  -g  -Wl,--enable-auto-import CMakeFiles/my_push_swap.dir/checker.c.o CMakeFiles/my_push_swap.dir/ft_strsplit.c.o CMakeFiles/my_push_swap.dir/get_next_line.c.o  -o my_push_swap.exe -Wl,--out-implib,libmy_push_swap.dll.a -Wl,--major-image-version,0,--minor-image-version,0 

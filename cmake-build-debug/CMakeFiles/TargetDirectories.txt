@@ -1,3 +1,0 @@
-/home/Provorny/my_push_swap/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/Provorny/my_push_swap/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/Provorny/my_push_swap/cmake-build-debug/CMakeFiles/my_push_swap.dir
